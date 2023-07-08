@@ -1,159 +1,129 @@
-import axios from "axios";
-import React, { useEffect, useState, createRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Image,
+  TextInput,
   TouchableOpacity,
   Alert,
-  ScrollView,
   SafeAreaView,
-  TextInput,
   Keyboard,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function SignupPage({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
-  const [errortext, setErrortext] = useState("");
 
-  const nameRef = createRef();
-  const emailRef = createRef();
-  const passwordRef = createRef();
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  //   // 토큰 생성 함수
+  //   const generateToken = (email, password) => {
+  //     // 토큰을 생성하는 로직을 구현합니다.
+  //     // 예시로 JWT를 사용하는 경우:
+  //     const token = Jwt.sign({ email, password }, "secretKey");
+  //     console.log(token);
+  //     return token;
+  //   };
 
   const signUp = async () => {
     if (!username) {
-      alert("이름을 입력하세요.");
+      Alert.alert("이름을 입력하세요.");
       return;
     }
     if (!email) {
-      alert("이메일을 입력하세요.");
+      Alert.alert("이메일을 입력하세요.");
       return;
     }
     if (!password) {
-      alert("비밀번호를 입력하세요.");
+      Alert.alert("비밀번호를 입력하세요.");
       return;
     }
 
-    const response = await fetch("http://localhost:8081/signup", {
-      method: "POST",
-      body: JSON.stringify({
-        usename: username,
-        email: email,
-        password: password,
-      }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
-    if (response.ok) {
-      setIsRegisterSuccess(true);
-      alert("Register Success!");
+    try {
+      const response = await fetch("http://localhost:8081/signup", {
+        method: "POST",
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        //const token = data.token; // 토큰을 받아온다고 가정하고, 실제 토큰 값을 받아올 수 있는 방식으로 수정해야 합니다.
+
+        // const token = generateToken(data.email, data.password);
+        // AsyncStorage.setItem("@token", token, (err) => {
+        //   if (err) {
+        //     console.log("Failed to save token.");
+        //   } else {
+        //     console.log("Token saved successfully.");
+        //   }
+        // });
+
+        Alert.alert("Register Success!");
+        navigation.navigate("MainTab", { screen: "HomePage" });
+      } else {
+        Alert.alert("Register failed");
+      }
+    } catch (error) {
+      console.error(error);
     }
-    const data = await response.json();
   };
-
-  if (isRegisterSuccess) {
-    navigation.navigate("MainTab", { screen: "HomePage" });
-  }
-  //   const [values, setValues] = useState({
-  //     usename: "",
-  //     email: "",
-  //     password: "",
-  //   });
-
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     axios
-  //       .post("http://localhost:8081/signup", values)
-  //       .then((res) => {
-  //         console.log(res);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.textTitle}>Traveler</Text>
         <Text style={styles.textBody}>Create an account</Text>
-        {/* <Inputs name="Full Name" icon="user" />
-          <Inputs name="Email" icon="envelope" />
-          <Inputs name="Password" icon="lock" pass={true} />
-          <Inputs name="Confirm Password" icon="lock" pass={true} /> */}
         <TextInput
           value={username}
-          onChangeText={(username) => setUsername(username)}
+          onChangeText={setUsername}
           placeholder="Full name"
-          style={{
-            fontSize: 15,
-            borderRadius: 15,
-            width: "80%",
-            height: 50,
-            marginVertical: 10,
-            backgroundColor: "white",
-            borderColor: "white",
-            padding: 15,
-          }}
+          style={styles.input}
           ref={nameRef}
-          //enter눌렀을때
-          onSubmitEditing={() => emailRef.current && emailRef.current.focus()}
+          onSubmitEditing={() => emailRef.current.focus()}
         />
         <TextInput
-          placeholder="Email"
           value={email}
-          onChangeText={(email) => setEmail(email)}
-          style={{
-            fontSize: 15,
-            borderRadius: 15,
-            width: "80%",
-            height: 50,
-            marginVertical: 10,
-            backgroundColor: "white",
-            borderColor: "white",
-            padding: 15,
-          }}
+          onChangeText={setEmail}
+          placeholder="Email"
+          style={styles.input}
           ref={emailRef}
-          //enter눌렀을때
-          onSubmitEditing={() =>
-            passwordRef.current && passwordRef.current.focus()
-          }
+          onSubmitEditing={() => passwordRef.current.focus()}
           blurOnSubmit={false}
           keyboardType="email-address"
           returnKeyType="next"
         />
         <TextInput
           value={password}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={setPassword}
           placeholder="Password"
-          style={{
-            fontSize: 15,
-            borderRadius: 15,
-            width: "80%",
-            height: 50,
-            marginVertical: 10,
-            backgroundColor: "white",
-            borderColor: "white",
-            padding: 15,
-          }}
+          style={styles.input}
           ref={passwordRef}
           onSubmitEditing={Keyboard.dismiss}
           secureTextEntry={true}
           blurOnSubmit={false}
-          returnKeyType="next"
+          returnKeyType="done"
         />
 
         <TouchableOpacity
-          style={[styles.submitcontainer, { backgroundColor: "#0251ce" }]}
+          style={[styles.button, { backgroundColor: "#0251ce" }]}
           onPress={signUp}
         >
-          <Text style={styles.submitText}>Create</Text>
+          <Text style={styles.buttonText}>Create</Text>
         </TouchableOpacity>
 
-        <View style={{ flexDirection: "row" }}>
+        <View style={styles.loginContainer}>
           <Text style={styles.textBody}>Already have an account</Text>
           <Text
             style={[styles.textBody, { color: "blue" }]}
@@ -176,12 +146,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#81C784",
     justifyContent: "center",
   },
-  image: {
-    width: 400,
-    height: 250,
-    marginVertical: 10,
-  },
-
   textTitle: {
     fontSize: 30,
     marginVertical: 10,
@@ -190,7 +154,17 @@ const styles = StyleSheet.create({
   textBody: {
     fontSize: 16,
   },
-  submitcontainer: {
+  input: {
+    fontSize: 15,
+    borderRadius: 15,
+    width: "80%",
+    height: 50,
+    marginVertical: 10,
+    backgroundColor: "white",
+    borderColor: "white",
+    padding: 15,
+  },
+  button: {
     width: "80%",
     height: 45,
     borderColor: "blue",
@@ -198,12 +172,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 0,
   },
-  submitText: {
+  buttonText: {
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
     alignSelf: "center",
     marginVertical: 10,
+  },
+  loginContainer: {
+    flexDirection: "row",
   },
 });
 
