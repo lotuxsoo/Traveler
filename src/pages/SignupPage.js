@@ -43,42 +43,27 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8081/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          username: username,
-          email: email,
-          password: password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        //const token = data.token; // 토큰을 받아온다고 가정하고, 실제 토큰 값을 받아올 수 있는 방식으로 수정해야 합니다.
-
-        // const token = generateToken(data.email, data.password);
-        // AsyncStorage.setItem("@token", token, (err) => {
-        //   if (err) {
-        //     console.log("Failed to save token.");
-        //   } else {
-        //     console.log("Token saved successfully.");
-        //   }
-        // });
-
-        Alert.alert("Register Success!");
-        navigation.navigate("MainTab", { screen: "HomePage" });
-      } else {
-        Alert.alert("Register failed");
+    const response = await fetch("http://10.0.2.2:3001/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-type": "application/json"
       }
-    } catch (error) {
-      console.error(error);
+    });
+    if (response.ok) {
+      setIsRegisterSuccess(true);
+      alert("Register Success!");
     }
+    const data = await response.json();
+
+  if (isRegisterSuccess) {
+    navigation.navigate("MainTab", { screen: "HomePage" })
   };
+}
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
