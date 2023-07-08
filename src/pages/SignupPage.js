@@ -25,16 +25,18 @@ function SignupPage({ navigation }) {
   const passwordRef = createRef();
 
   const signUp = async () => {
-    setErrortext("");
-    // alert 띄우기
-    //if (!idChecking) {
-    //   alert("닉네임 중복검사를 해주세요.");
-    // }
-    if (username == "" || password == "") {
-      alert("이메일과 비밀번호를 입력해주세요.");
+    if (!username) {
+      alert("이름을 입력하세요.");
+      return;
     }
-
-    setLoading(true);
+    if (!email) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+    if (!password) {
+      alert("비밀번호를 입력하세요.");
+      return;
+    }
 
     const response = await fetch("http://localhost:8081/signup", {
       method: "POST",
