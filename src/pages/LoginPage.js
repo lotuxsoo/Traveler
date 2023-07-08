@@ -12,7 +12,6 @@ import {
   TextInput,
   Keyboard,
 } from "react-native";
-// import Inputs from "../components/Inputs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function LoginPage({ navigation }) {
@@ -23,8 +22,6 @@ function LoginPage({ navigation }) {
   const [errortext, setErrortext] = useState("");
 
   const login = async () => {
-    setErrortext("");
-
     if (!email) {
       alert("이메일을 입력하세요.");
       return;
