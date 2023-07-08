@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState, createRef } from "react";
 import {
   View,
   Text,
@@ -9,18 +10,63 @@ import {
   ScrollView,
   SafeAreaView,
   TextInput,
+  Keyboard,
 } from "react-native";
 // import Inputs from "../components/Inputs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 
 function LoginPage({ navigation }) {
-  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [token, setToken] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState("");
+
+  const login = async () => {
+    setErrortext("");
+
+    if (!email) {
+      alert("이메일을 입력하세요.");
+      return;
+    }
+    if (!password) {
+      alert("비밀번호를 입력하세요.");
+      return;
+    }
+    //setLoading(true);
+
+    const response = await fetch("http://localhost:8081/login", {
+      method: "POST",
+      body: JSON.stringify({
+        password: password,
+        username: username,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.ok);
+    if (response.ok) {
+      console.log(response.headers);
+      AsyncStorage.setItem(
+        "@userData",
+        JSON.stringify(response.headers),
+        (err) => {
+          if (err) {
+            console.log("an error");
+            throw err;
+          }
+          console.log("success");
+        }
+      ).catch((err) => {
+        console.log("2 an error");
+      });
+      alert("Login Success!");
+      navigation.navigate("MainTab", { screen: "HomePage" });
+    } else {
+      alert("Login failed");
+    }
+  };
 
   // const save = async () => {
   //   try {
@@ -49,10 +95,12 @@ function LoginPage({ navigation }) {
       <View style={styles.container}>
         <Text style={styles.textTitle}>Welcome</Text>
         <Text style={styles.textBody}>Log in to your exist account</Text>
-        <View style={{ marginTop: 20 }} />
+        <View style={{ marginBottom: 30 }} />
         {/* <Inputs name="Email" icon="user" />
           <Inputs name="Password" icon="lock" pass={true} /> */}
         <TextInput
+          value={email}
+          onChangeText={(email) => setEmail(email)}
           placeholder="Email"
           style={{
             fontSize: 15,
@@ -60,13 +108,21 @@ function LoginPage({ navigation }) {
             width: "80%",
             height: 50,
             marginVertical: 10,
-            backgroundColor: "#E3F2FD",
-            borderColor: "#E3F2FD",
+            backgroundColor: "white",
+            borderColor: "white",
             padding: 15,
           }}
+          onSubmitEditing={() =>
+            passwordInputRef.current && passwordInputRef.current.focus()
+          }
+          blurOnSubmit={false}
+          keyboardType="email-address"
+          returnKeyType="next"
         />
 
         <TextInput
+          value={password}
+          onChangeText={(password) => setPassword(password)}
           placeholder="Password"
           style={{
             fontSize: 15,
@@ -74,15 +130,18 @@ function LoginPage({ navigation }) {
             width: "80%",
             height: 50,
             marginVertical: 10,
-            backgroundColor: "#E3F2FD",
-            borderColor: "#E3F2FD",
+            backgroundColor: "white",
+            borderColor: "white",
             padding: 15,
           }}
+          secureTextEntry={true}
+          blurOnSubmit={false}
+          returnKeyType="next"
         />
 
         <TouchableOpacity
           style={[styles.submitcontainer, { backgroundColor: "#0148a4" }]}
-          onPress={() => navigation.navigate("MainTab", { screen: "HomePage" })}
+          onPress={login}
         >
           <Text style={styles.submitText}>Log In</Text>
         </TouchableOpacity>
@@ -107,9 +166,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#81C784",
     justifyContent: "center",
   },
+  // header: {
+  //   flex: 2,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
+  // footer: {
+  //   flex: 3,
+  //   backgroundColor: "#fff",
+  //   borderTopLeftRadius: 30,
+  //   borderTopRightRadius: 30,
+  //   paddingVertical: 50,
+  //   paddingHorizontal: 30,
+  // },
   textTitle: {
     fontSize: 30,
     fontWeight: "600",
