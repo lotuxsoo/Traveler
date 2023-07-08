@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import {
   View,
   Text,
@@ -10,24 +10,68 @@ import {
   ScrollView,
   SafeAreaView,
   TextInput,
+  Keyboard,
 } from "react-native";
 
 function SignupPage({ navigation }) {
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
+  const [errortext, setErrortext] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:8081/signup", values)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+  const nameRef = createRef();
+  const emailRef = createRef();
+  const passwordRef = createRef();
+
+  const signUp = async () => {
+    setErrortext("");
+    // alert 띄우기
+    //if (!idChecking) {
+    //   alert("닉네임 중복검사를 해주세요.");
+    // }
+    if (username == "" || password == "") {
+      alert("이메일과 비밀번호를 입력해주세요.");
+    }
+
+    setLoading(true);
+
+    const response = await fetch("http://localhost:8081/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        usename: username,
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    if (response.ok) {
+      setIsRegisterSuccess(true);
+      alert("Register Success!");
+    }
+    const data = await response.json();
   };
+
+  if (isRegisterSuccess) {
+    navigation.navigate("MainTab", { screen: "HomePage" });
+  }
+  //   const [values, setValues] = useState({
+  //     usename: "",
+  //     email: "",
+  //     password: "",
+  //   });
+
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //     axios
+  //       .post("http://localhost:8081/signup", values)
+  //       .then((res) => {
+  //         console.log(res);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -39,6 +83,8 @@ function SignupPage({ navigation }) {
           <Inputs name="Password" icon="lock" pass={true} />
           <Inputs name="Confirm Password" icon="lock" pass={true} /> */}
         <TextInput
+          value={username}
+          onChangeText={(username) => setUsername(username)}
           placeholder="Full name"
           style={{
             fontSize: 15,
@@ -46,27 +92,40 @@ function SignupPage({ navigation }) {
             width: "80%",
             height: 50,
             marginVertical: 10,
-
-            backgroundColor: "#E3F2FD",
-            borderColor: "#E3F2FD",
+            backgroundColor: "white",
+            borderColor: "white",
             padding: 15,
           }}
+          ref={nameRef}
+          //enter눌렀을때
+          onSubmitEditing={() => emailRef.current && emailRef.current.focus()}
         />
         <TextInput
           placeholder="Email"
+          value={email}
+          onChangeText={(email) => setEmail(email)}
           style={{
             fontSize: 15,
             borderRadius: 15,
             width: "80%",
             height: 50,
             marginVertical: 10,
-
-            backgroundColor: "#E3F2FD",
-            borderColor: "#E3F2FD",
+            backgroundColor: "white",
+            borderColor: "white",
             padding: 15,
           }}
+          ref={emailRef}
+          //enter눌렀을때
+          onSubmitEditing={() =>
+            passwordRef.current && passwordRef.current.focus()
+          }
+          blurOnSubmit={false}
+          keyboardType="email-address"
+          returnKeyType="next"
         />
         <TextInput
+          value={password}
+          onChangeText={(password) => setPassword(password)}
           placeholder="Password"
           style={{
             fontSize: 15,
@@ -74,15 +133,20 @@ function SignupPage({ navigation }) {
             width: "80%",
             height: 50,
             marginVertical: 10,
-            backgroundColor: "#E3F2FD",
-            borderColor: "#E3F2FD",
+            backgroundColor: "white",
+            borderColor: "white",
             padding: 15,
           }}
+          ref={passwordRef}
+          onSubmitEditing={Keyboard.dismiss}
+          secureTextEntry={true}
+          blurOnSubmit={false}
+          returnKeyType="next"
         />
 
         <TouchableOpacity
           style={[styles.submitcontainer, { backgroundColor: "#0251ce" }]}
-          onPress={() => navigation.navigate("MainTab", { screen: "HomePage" })}
+          onPress={signUp}
         >
           <Text style={styles.submitText}>Create</Text>
         </TouchableOpacity>
@@ -107,7 +171,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: "#81C784",
     justifyContent: "center",
   },
   image: {
