@@ -38,27 +38,27 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://localhost:8081/signup", {
+    const response = await fetch("http://10.0.2.2:3001/signup", {
       method: "POST",
       body: JSON.stringify({
-        usename: username,
+        username: username,
         email: email,
         password: password,
       }),
       headers: {
-        "Content-type": "application/json",
-      },
+        "Content-type": "application/json"
+      }
     });
     if (response.ok) {
       setIsRegisterSuccess(true);
       alert("Register Success!");
     }
     const data = await response.json();
-  };
 
   if (isRegisterSuccess) {
-    navigation.navigate("MainTab", { screen: "HomePage" });
-  }
+    navigation.navigate("MainTab", { screen: "HomePage" })
+  };
+}
   //   const [values, setValues] = useState({
   //     usename: "",
   //     email: "",

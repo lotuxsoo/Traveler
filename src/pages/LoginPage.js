@@ -32,18 +32,20 @@ function LoginPage({ navigation }) {
     }
     //setLoading(true);
 
-    const response = await fetch("http://localhost:8081/login", {
+    const response = await fetch("http://10.0.2.2:3001/login", {
       method: "POST",
       body: JSON.stringify({
-        password: password,
-        username: username,
+        email: email,
+        password: password
       }),
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
     console.log(response.ok);
-    if (response.ok) {
+    const responseData = await response.json();
+    console.log(responseData);
+    if (responseData.Login == true) {
       console.log(response.headers);
       AsyncStorage.setItem(
         "@userData",
@@ -98,7 +100,7 @@ function LoginPage({ navigation }) {
         <TextInput
           value={email}
           onChangeText={(email) => setEmail(email)}
-          placeholder="Email"
+          placeholder="Emails"
           style={{
             fontSize: 15,
             borderRadius: 15,
@@ -120,7 +122,7 @@ function LoginPage({ navigation }) {
         <TextInput
           value={password}
           onChangeText={(password) => setPassword(password)}
-          placeholder="Password"
+          placeholder="Passwords"
           style={{
             fontSize: 15,
             borderRadius: 15,
