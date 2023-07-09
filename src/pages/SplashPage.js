@@ -4,39 +4,48 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  ImageBackground,
 } from "react-native";
 import React from "react";
+import { LinearGradient } from "expo-linear-gradient";
 
 function SplashPage({ navigation }) {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-          Let's get started
-        </Text>
+    <SafeAreaView>
+      <ImageBackground
+        source={require("../../assets/background.png")}
+        resizeMode="cover"
+        style={{ width: "100%", height: "100%" }}
+      >
+        <View style={{ flex: 1, justifyContent: "center", marginLeft: 30 }}>
+          <Text
+            style={{
+              color: "#FAFAFA",
+              fontSize: 40,
+              fontWeight: "800",
+            }}
+          >
+            Let's travel!
+          </Text>
 
-        {/* <View style={{}}>
-            <Image></Image>
-          </View> */}
-
-        <View style={{}}>
           <TouchableOpacity
             style={[styles.submitcontainer, { backgroundColor: "#FAFAFA" }]}
             onPress={() =>
-              navigation.navigate("MainTab", { screen: "HomePage" })
+              //navigation.navigate("MainTab", { screen: "HomePage" })
+              navigation.navigate("SignupPage")
             }
           >
-            <Text style={styles.submitText}>Log In</Text>
+            <Text style={styles.submitText}>Join Now</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   submitcontainer: {
-    width: "45%",
+    width: "50%",
     height: 50,
     borderColor: "#FAFAFA",
     borderRadius: 20,

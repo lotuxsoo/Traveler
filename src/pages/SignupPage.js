@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, createRef } from "react";
 import {
   View,
   Text,
@@ -10,15 +10,17 @@ import {
   Keyboard,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 function SignupPage({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
 
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const nameRef = createRef();
+  const emailRef = createRef();
+  const passwordRef = createRef();
 
   //   // 토큰 생성 함수
   //   const generateToken = (email, password) => {
@@ -43,7 +45,7 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://10.0.2.2:3001/signup", {
+    const response = await fetch("http://localhost:3001/signup", {
       method: "POST",
       body: JSON.stringify({
         username: username,
@@ -51,8 +53,8 @@ function SignupPage({ navigation }) {
         password: password,
       }),
       headers: {
-        "Content-type": "application/json"
-      }
+        "Content-type": "application/json",
+      },
     });
     if (response.ok) {
       setIsRegisterSuccess(true);
@@ -60,67 +62,91 @@ function SignupPage({ navigation }) {
     }
     const data = await response.json();
 
-  if (isRegisterSuccess) {
-    navigation.navigate("MainTab", { screen: "HomePage" })
+    if (isRegisterSuccess) {
+      navigation.navigate("MainTab", { screen: "HomePage" });
+    }
   };
-}
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.textTitle}>Traveler</Text>
-        <Text style={styles.textBody}>Create an account</Text>
-        <TextInput
-          value={username}
-          onChangeText={setUsername}
-          placeholder="Full name"
-          style={styles.input}
-          ref={nameRef}
-          onSubmitEditing={() => emailRef.current.focus()}
-        />
-        <TextInput
-          value={email}
-          onChangeText={setEmail}
-          placeholder="Email"
-          style={styles.input}
-          ref={emailRef}
-          onSubmitEditing={() => passwordRef.current.focus()}
-          blurOnSubmit={false}
-          keyboardType="email-address"
-          returnKeyType="next"
-        />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          style={styles.input}
-          ref={passwordRef}
-          onSubmitEditing={Keyboard.dismiss}
-          secureTextEntry={true}
-          blurOnSubmit={false}
-          returnKeyType="done"
-        />
-
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#0251ce" }]}
-          onPress={signUp}
-        >
-          <Text style={styles.buttonText}>Create</Text>
-        </TouchableOpacity>
-
-        <View style={styles.loginContainer}>
-          <Text style={styles.textBody}>Already have an account</Text>
+    <LinearGradient style={{ flex: 1 }} colors={["#007260", "#B2DFDB"]}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
           <Text
-            style={[styles.textBody, { color: "blue" }]}
-            onPress={() => {
-              navigation.navigate("LoginPage");
+            style={{
+              color: "#FAFAFA",
+              fontSize: 35,
+              fontWeight: "800",
+              marginBottom: 10,
             }}
           >
-            Login Here
+            Traveler
           </Text>
+
+          <Text
+            style={{
+              color: "#FAFAFA",
+              fontSize: 20,
+              fontWeight: "800",
+              marginBottom: 10,
+            }}
+          >
+            Create an account
+          </Text>
+          <TextInput
+            value={username}
+            onChangeText={setUsername}
+            placeholder="Full name"
+            style={styles.input}
+            ref={nameRef}
+            onSubmitEditing={() => emailRef.current.focus()}
+          />
+          <TextInput
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Email"
+            style={styles.input}
+            ref={emailRef}
+            onSubmitEditing={() => passwordRef.current.focus()}
+            blurOnSubmit={false}
+            keyboardType="email-address"
+            returnKeyType="next"
+          />
+          <TextInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            style={styles.input}
+            ref={passwordRef}
+            onSubmitEditing={Keyboard.dismiss}
+            secureTextEntry={true}
+            blurOnSubmit={false}
+            returnKeyType="done"
+          />
+
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: "#0251ce" }]}
+            onPress={signUp}
+            // onPress={() =>
+            //   navigation.navigate("MainTab", { screen: "HomePage" })
+            // }
+          >
+            <Text style={styles.buttonText}>Create</Text>
+          </TouchableOpacity>
+
+          <View style={styles.loginContainer}>
+            <Text style={styles.textBody}>Already have an account</Text>
+            <Text
+              style={[styles.textBody, { color: "blue", marginLeft: 10 }]}
+              onPress={() => {
+                navigation.navigate("LoginPage");
+              }}
+            >
+              Login Here
+            </Text>
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
@@ -128,7 +154,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#81C784",
     justifyContent: "center",
   },
   textTitle: {

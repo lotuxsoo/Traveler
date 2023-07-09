@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { GiftedChat, SystemMessage } from "react-native-gifted-chat";
 
 function FindingPage({ navigation }) {
   return (

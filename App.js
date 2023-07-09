@@ -12,6 +12,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SplashPage" component={SplashPage} />
         <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="MainTab" component={MainTab} />

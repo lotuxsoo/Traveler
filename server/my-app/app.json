@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "travel_project",
-    "slug": "travel_project",
+    "name": "my-app",
+    "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,8 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "i"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {

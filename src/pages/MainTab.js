@@ -3,7 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FindingPage from "./FindingPage";
 import MyPage from "./MyPage";
 import HomePage from "./HomePage";
-// import Icon from "react-native-vector-icons/AntDesign";
+import MapPage from "./MapPage";
+import { Feather } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,6 +19,19 @@ function MainTab() {
         component={HomePage}
         options={{
           tabBarLabel: "Home",
+          tabBarIcon: ({ tintColor }) => (
+            <Feather name="home" size={28}></Feather>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="MapPage"
+        component={MapPage}
+        options={{
+          tabBarLabel: "Map",
+          tabBarIcon: ({ tintColor }) => (
+            <Feather name="map" size={28}></Feather>
+          ),
         }}
       />
       <Tab.Screen
@@ -25,6 +39,9 @@ function MainTab() {
         component={FindingPage}
         options={{
           tabBarLabel: "Finding",
+          tabBarIcon: ({ tintColor }) => (
+            <Feather name="search" size={28}></Feather>
+          ),
         }}
       />
       <Tab.Screen
@@ -32,6 +49,9 @@ function MainTab() {
         component={MyPage}
         options={{
           tabBarLabel: "MyPage",
+          tabBarIcon: ({ tintColor }) => (
+            <Feather name="user" size={28}></Feather>
+          ),
         }}
       />
     </Tab.Navigator>
