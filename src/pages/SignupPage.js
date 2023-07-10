@@ -43,17 +43,17 @@ function SignupPage({ navigation }) {
       body: JSON.stringify({
         username: username,
         email: email,
-        password: password,
+        password: password
       }),
       headers: {
         "Content-type": "application/json"
       }
     });
+
     if (response.ok) {
       setIsRegisterSuccess(true);
       alert("Register Success!");
-    }
-    const data = await response.json();
+    };
 
   if (isRegisterSuccess) {
     navigation.navigate("MainTab", { screen: "HomePage" })
