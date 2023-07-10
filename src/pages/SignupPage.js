@@ -45,7 +45,7 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://localhost:3001/signup", {
+    const response = await fetch("http://10.0.2.2:3001/signup", {
       method: "POST",
       body: JSON.stringify({
         username: username,
