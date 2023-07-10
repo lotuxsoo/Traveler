@@ -17,7 +17,13 @@ function SplashPage({ navigation }) {
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
       >
-        <View style={{ flex: 1, justifyContent: "center", marginLeft: 30 }}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            marginLeft: 30,
+          }}
+        >
           <Text
             style={{
               color: "#FAFAFA",
@@ -51,6 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginVertical: 10,
     borderWidth: 0,
+    justifyContent: "center",
   },
   submitText: {
     fontSize: 20,
