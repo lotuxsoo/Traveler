@@ -38,7 +38,6 @@ function FindingPage() {
       });
       const data = await response.json();
       setList(data);
-      console.log(data);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -107,17 +106,21 @@ function FindingPage() {
             return (
               <TouchableOpacity
                 // onPressIn={() => Keyboard.dismiss()}
-                //  onPress={() => navigation.navigate("ReviewPage")}
+                onPress={() => {
+                  navigation.navigate("ReviewPage", { id: item.spot });
+                }}
                 activeOpacity={1}
                 style={styles.applicationBox}
                 key={item.spot}
               >
-                {/* <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Image
-                  source={{ uri: `data:image/jpeg;base64,${item.image}` }}
-                  style={styles.image}
-                />
-                </View> */}
+                <View
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <Image
+                    source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+                    style={styles.image}
+                  />
+                </View>
                 <View
                   style={{
                     justifyContent: "center",

@@ -65,7 +65,16 @@ app.post("/show", (req, res) => {
     //   const base64Image = item.image.toString('base64');
     //   return { ...item, image: base64Image };
     // });
-    console.log("reersfsd", result);
+    return res.json(result);
+  });
+});
+
+app.post("/finding", (req, res) => {
+  let sql = "SELECT * FROM post WHERE spot = ?";
+  pool.query(sql, req.body.id, (error, result) => {
+    if (error) throw error;
+    let jj = res.json(result);
+    console.log("jj", jj);
     return res.json(result);
   });
 });
@@ -73,3 +82,43 @@ app.post("/show", (req, res) => {
 app.listen(3001, "127.0.0.1", () => {
   console.log(`Listening`);
 });
+
+// const fs = require("fs");
+// const mysql = require("mysql2");
+// const imageFilePath = "../../assets/images/hanraa.jpg";
+// const imageBuffer = fs.readFileSync(imageFilePath);
+// // var connection = mysql.createPool({
+// //   host: '127.0.0.1',
+// //   user: 'root',
+// //   password: 'password',
+// //   database: 'traveler',
+// //   connectionLimit: 10
+// // });
+
+// var connection = mysql.createPool({
+//   host: "localhost",
+//   user: "root",
+//   password: "root",
+//   database: "traveler",
+//   connectionLimit: 10,
+// });
+
+// const insertQuery = 'UPDATE post SET image = ? WHERE spot = "제주도"';
+// connection.query(insertQuery, [imageBuffer], (error, results) => {
+//   if (error) throw error;
+//   console.log("Image added successfully!");
+//   // Retrieve the image from the database
+//   const selectQuery = 'SELECT image FROM post WHERE spot = "제주도"';
+//   connection.query(selectQuery, (error, results) => {
+//     if (error) throw error;
+//     if (results.length > 0) {
+//       // Assuming the first row has the image data
+//       const imageBlob = results[0].image;
+//       // Write the image blob to a file
+//       fs.writeFileSync("./output.jpg", imageBlob);
+//       console.log("Image retrieved and saved!");
+//     } else {
+//       console.log("No image found!");
+//     }
+//   });
+// });
