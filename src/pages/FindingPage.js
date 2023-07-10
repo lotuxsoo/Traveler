@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -10,31 +10,31 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Image
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+  Image,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 function FindingPage() {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const navigation = useNavigation();
 
   const onChangeKeyword = useCallback((text) => {
     setKeyword(text.trim());
   }, []);
-  
+
   const getList = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://10.0.2.2:3001/show", {
+      const response = await fetch("http://localhost:3001/show", {
         method: "POST",
         body: JSON.stringify({
-          key: keyword
+          key: keyword,
         }),
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
       const data = await response.json();
       setList(data);
@@ -46,7 +46,7 @@ function FindingPage() {
   };
 
   useEffect(() => {
-    onChangeKeyword('');
+    onChangeKeyword("");
   }, []);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function FindingPage() {
             autoCorrect={false}
             clearButtonMode="always"
             onChangeText={onChangeKeyword}
-            placeholderTextColor={'#929292'}
+            placeholderTextColor={"#929292"}
             style={styles.textInput}
             placeholder="검색"
             value={keyword}
@@ -78,23 +78,24 @@ function FindingPage() {
         <View
           style={{
             marginTop: 25,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <ActivityIndicator color={'#fff'} />
+          <ActivityIndicator color={"#fff"} />
         </View>
       ) : (
-        <FlatList style = {{ marginTop: 20 }}
-        keyExtractor={(item) => item.spot}
+        <FlatList
+          style={{ marginTop: 20 }}
+          keyExtractor={(item) => item.spot}
           data={list}
           disableScrollViewPanResponder={true}
           ListEmptyComponent={() => (
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
               <Text
                 style={{
-                  color: '#fff',
-                  display: loading ? 'none' : 'flex',
+                  color: "#fff",
+                  display: loading ? "none" : "flex",
                   paddingVertical: 30,
                 }}
               >
@@ -102,31 +103,30 @@ function FindingPage() {
               </Text>
             </View>
           )}
-
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
-                onPressIn={() => Keyboard.dismiss()}
-                onPress={() => navigation.navigate('ReviewPage')}
+                // onPressIn={() => Keyboard.dismiss()}
+                //  onPress={() => navigation.navigate("ReviewPage")}
                 activeOpacity={1}
                 style={styles.applicationBox}
                 key={item.spot}
               >
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                {/* <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Image
                   source={{ uri: `data:image/jpeg;base64,${item.image}` }}
                   style={styles.image}
                 />
-                </View>
+                </View> */}
                 <View
                   style={{
-                    justifyContent: 'center',
-                    flexDirection: 'row',
+                    justifyContent: "center",
+                    flexDirection: "row",
                     paddingVertical: 10,
                     paddingHorizontal: 30,
                   }}
                 >
-                  <Text style={[styles.fontStyle, { fontWeight: 'bold' }]}>
+                  <Text style={[styles.fontStyle, { fontWeight: "bold" }]}>
                     {item.spot}
                   </Text>
                 </View>
@@ -141,31 +141,31 @@ function FindingPage() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#000',
+    backgroundColor: "#FFF",
     flex: 1,
   },
   fontStyle: {
     fontSize: 14,
-    color: 'white',
+    color: "black",
     marginTop: 6,
   },
   applicationBox: {
-    borderBottomColor: '#3D3D3D',
+    borderBottomColor: "#3D3D3D",
     borderBottomWidth: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   searchTextInput: {
-    justifyContent: 'center',
+    justifyContent: "center",
     height: 40,
     lineHeight: 40,
     paddingHorizontal: 5,
-    backgroundColor: '#414141',
+    backgroundColor: "#414141",
     marginTop: 15,
     borderRadius: 5,
   },
 
   textInput: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 16,
     marginLeft: 8,
     paddingHorizontal: 7,
@@ -173,8 +173,9 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: 150, width: 150
-  }
+    height: 150,
+    width: 150,
+  },
 });
 
 export default FindingPage;
