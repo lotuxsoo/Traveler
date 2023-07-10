@@ -13,7 +13,7 @@ function SplashPage({ navigation }) {
   return (
     <SafeAreaView>
       <ImageBackground
-        source={require("../../assets/background.png")}
+        source={require("../../assets/images/splashground.png")}
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
       >

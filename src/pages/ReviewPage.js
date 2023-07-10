@@ -6,7 +6,7 @@ function ReviewPage({ route, navigation }) {
   const { id } = route.params;
 
   const finding = async () => {
-    const response = await fetch("http://localhost:3001/finding", {
+    const response = await fetch("http://10.0.2.2:3001/finding", {
       method: "POST",
       body: JSON.stringify({
         id: id,

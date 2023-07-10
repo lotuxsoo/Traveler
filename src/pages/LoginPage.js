@@ -28,7 +28,7 @@ function LoginPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://localhost:3001/login", {
+    const response = await fetch("http://10.0.2.2:3001/login", {
       method: "POST",
       body: JSON.stringify({
         email: email,
@@ -79,7 +79,7 @@ function LoginPage({ navigation }) {
   }, []);
 
   return (
-    <LinearGradient style={{ flex: 1 }} colors={["#007260", "#B2DFDB"]}>
+    <LinearGradient style={{ flex: 1 }} colors={["#3F51B5", "#E8EAF6"]}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text
@@ -87,6 +87,7 @@ function LoginPage({ navigation }) {
               color: "#FAFAFA",
               fontSize: 35,
               fontWeight: "800",
+              marginBottom: 10,
             }}
           >
             Welcome
@@ -96,6 +97,7 @@ function LoginPage({ navigation }) {
               color: "#FAFAFA",
               fontSize: 20,
               fontWeight: "800",
+              marginBottom: 10,
             }}
           >
             Log in to your exist account

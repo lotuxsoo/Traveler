@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Keyboard,
   ScrollView,
+  ImageBackground,
+  SafeAreaView,
 } from "react-native";
 import Task1 from "./../components/Task1";
 import { Feather, Fontisto } from "@expo/vector-icons";
@@ -59,51 +61,57 @@ function HomePage({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Added this scroll view to enable scrolling when list gets longer than the page */}
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        keyboardShouldPersistTaps="handled"
+    <SafeAreaView>
+      <ImageBackground
+        source={require("../../assets/images/background.png")}
+        resizeMode="cover"
+        style={{ width: "100%", height: "100%" }}
       >
-        {/* Today's Tasks */}
-        <View style={styles.tasksWrapper}>
-          <Text style={styles.sectionTitle}>Travel TodoList</Text>
-          <View style={styles.items}>
-            {Object.values(taskItems).map((item) => {
-              return (
-                <TouchableOpacity key={item.id}>
-                  <Task1
-                    key={item.id}
-                    item={item}
-                    deleteTask={deleteTask}
-                    toggleTask={toggleTask}
-                    mapTask={mapTask}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+        {/* Added this scroll view to enable scrolling when list gets longer than the page */}
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Today's Tasks */}
+          <View style={styles.tasksWrapper}>
+            <Text style={styles.sectionTitle}>Travel TodoList</Text>
+            <View style={styles.items}>
+              {Object.values(taskItems).map((item) => {
+                return (
+                  <TouchableOpacity key={item.id}>
+                    <Task1
+                      key={item.id}
+                      item={item}
+                      deleteTask={deleteTask}
+                      toggleTask={toggleTask}
+                      mapTask={mapTask}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-      {/* Write a task */}
-      {/* Uses a keyboard avoiding view which ensures the keyboard does not cover the items on screen */}
-      <View style={styles.writeTaskWrapper}>
-        <TextInput
-          style={styles.input}
-          placeholder={"Write a task"}
-          value={task}
-          onChangeText={(text) => setTask(text)}
-        />
-        <TouchableOpacity onPress={() => addTask()}>
-          <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
+        {/* Write a task */}
+        {/* Uses a keyboard avoiding view which ensures the keyboard does not cover the items on screen */}
+        <View style={styles.writeTaskWrapper}>
+          <TextInput
+            style={styles.input}
+            placeholder={"Write a task"}
+            value={task}
+            onChangeText={(text) => setTask(text)}
+          />
+          <TouchableOpacity onPress={() => addTask()}>
+            <View style={styles.addWrapper}>
+              <Text style={styles.addText}>+</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
+    </SafeAreaView>
   );
 }
 

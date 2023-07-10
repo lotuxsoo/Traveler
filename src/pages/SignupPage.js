@@ -45,12 +45,12 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://localhost:3001/signup", {
+    const response = await fetch("http://10.0.2.2:3001/signup", {
       method: "POST",
       body: JSON.stringify({
         username: username,
         email: email,
-        password: password
+        password: password,
       }),
       headers: {
         "Content-type": "application/json",
@@ -60,7 +60,7 @@ function SignupPage({ navigation }) {
     if (response.ok) {
       setIsRegisterSuccess(true);
       alert("Register Success!");
-    };
+    }
 
     if (isRegisterSuccess) {
       navigation.navigate("MainTab", { screen: "HomePage" });
@@ -68,7 +68,7 @@ function SignupPage({ navigation }) {
   };
 
   return (
-    <LinearGradient style={{ flex: 1 }} colors={["#007260", "#B2DFDB"]}>
+    <LinearGradient style={{ flex: 1 }} colors={["#3F51B5", "#E8EAF6"]}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text
