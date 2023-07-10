@@ -73,7 +73,7 @@ function HomePage({ navigation }) {
           <View style={styles.items}>
             {Object.values(taskItems).map((item) => {
               return (
-                <TouchableOpacity>
+                <TouchableOpacity key={item.id}>
                   <Task1
                     key={item.id}
                     item={item}
