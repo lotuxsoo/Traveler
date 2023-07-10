@@ -144,6 +144,11 @@ var pool = mysql.createPool({
   password: "password",
   database: "traveler",
   connectionLimit: 10,
+  host: "127.0.0.1",
+  user: "root",
+  password: "password",
+  database: "traveler",
+  connectionLimit: 10,
 });
 
 app.post("/signup", (req, res) => {
@@ -152,6 +157,26 @@ app.post("/signup", (req, res) => {
   pool.query(sql, values, (error, result) => {
     if (error) throw error;
     res.json(result);
+  });
+});
+
+app.post("/finding", (req, res) => {
+  let sql = "SELECT * FROM post WHERE spot = ?";
+  pool.query(sql, req.body.id, (error, result) => {
+    if (error) throw error;
+    let jj = res.json(result);
+    console.log("w22222");
+    console.log(result);
+  });
+});
+
+app.post("/finding", (req, res) => {
+  let sql = "SELECT * FROM post WHERE spot = ?";
+  pool.query(sql, req.body.id, (error, result) => {
+    if (error) throw error;
+    let jj = res.json(result);
+    console.log("w22222");
+    console.log(result);
   });
 });
 
@@ -208,6 +233,52 @@ app.post("/like", (req, res) => {
   const values = [req.body.current, req.body.spot];
   pool.query(sql, values, (error, result) => {
     if (error) throw error;
+    req.json({ like: updatedLike });
+  });
+});
+
+app.post("/reply", (req, res) => {
+  const sql = "INSERT INTO reply (name, text, spot) values (?, ?, ?)";
+  const values = [req.body.name, req.body.text, req.body.spot];
+  pool.query(sql, values, (error, result) => {
+    if (error) throw error;
+    const sql2 = "SELECT * FROM reply WHERE spot = ?";
+    pool.query(sql2, req.body.spot, (error, result) => {
+      if (error) error;
+    });
+    return req.json(result);
+  });
+});
+
+app.post("/add", (req, res) => {
+  const sql =
+    "INSERT INTO post (`spot`, `rating`, `review`, `like`, `name`, `image`) values (?, ?, ?, ?, ?, ?)";
+  const values = [
+    req.body.spot,
+    req.body.rating,
+    req.body.review,
+    0,
+    req.body.name,
+    req.body,
+    image,
+  ];
+
+  pool.query(sql, values, (error, result) => {
+    if (error) throw error;
+    const updatedResult = result.map((item) => {
+      const base64Image = item.image.toString("base64");
+      return { ...item, image: base64Image };
+    });
+    return res.json(updatedResult);
+  });
+});
+
+app.post("/like", (req, res) => {
+  const sql = "UPDATE post SET `like` = ? WHERE spot = ?";
+  const values = [req.body.current, req.body.spot];
+  pool.query(sql, values, (error, result) => {
+    if (error) throw error;
+    req.json(result);
     req.json({ like: updatedLike });
   });
 });

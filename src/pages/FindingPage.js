@@ -13,7 +13,8 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 function FindingPage() {
   const [loading, setLoading] = useState(true);
@@ -71,8 +72,22 @@ function FindingPage() {
     </View>
   );
 
+  const CardView = ({ data, image }) => (
+    <View style={styles.CardContainer}>
+      <Image
+        source={{ uri: `data:image/jpeg;base64, ${image}` }}
+        style={styles.image}
+      />
+      <View style={styles.cardContentContainer}>
+        <Text style={styles.CardTitle}>{data.name}</Text>
+        <Text style={styles.CardContent}>{data.spot}</Text>
+      </View>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
+      <View style={{ paddingHorizontal: 25, marginTop: 20 }}>
       <View style={{ paddingHorizontal: 25, marginTop: 20 }}>
         <View style={styles.searchTextInput}>
           <TextInput
@@ -80,6 +95,7 @@ function FindingPage() {
             autoCorrect={false}
             clearButtonMode="always"
             onChangeText={onChangeKeyword}
+            placeholderTextColor={"#CCCCCC"}
             placeholderTextColor={"#CCCCCC"}
             style={styles.textInput}
             placeholder="검색"
@@ -91,6 +107,7 @@ function FindingPage() {
         <View
           style={{
             marginTop: 10,
+            marginTop: 10,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -98,6 +115,57 @@ function FindingPage() {
           <ActivityIndicator color={"#fff"} />
         </View>
       ) : (
+        <View style={{ flex: 1 }}>
+        <FlatList
+          style={{ marginTop: 20 }}
+          keyExtractor={(item) => item.spot}
+          data={list}
+          disableScrollViewPanResponder={true}
+          ListEmptyComponent={() => (
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  display: loading ? "none" : "flex",
+                  paddingVertical: 30,
+                }}
+              >
+                검색 내용이 없습니다.
+              </Text>
+            </View>
+          )}
+          renderItem={({ item, index }) => {
+            return (
+              <TouchableOpacity
+                onPressIn={() => Keyboard.dismiss()}
+                onPress={() => navigation.navigate("ReviewPage", { id: item.spot })}
+                activeOpacity={1}
+                style={styles.applicationBox}
+                key={item.spot}
+              >
+                <CardView image={item.image} data={item} />
+                <View
+                  style={{
+                    justifyContent: "center",
+                    flexDirection: "row",
+                    paddingVertical: 10,
+                    paddingHorizontal: 30,
+                  }}
+                >
+                  <Text style={[styles.fontStyle, { fontWeight: "bold" }]}>
+                    {item.spot}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+        <View style={styles.createButton}>
+          <TouchableOpacity style={styles.floatingButton}>
+              <Icon name="plus" size={25} color="#000000" style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+        </View>
         <View style={{ flex: 1 }}>
           <FlatList
             style={{ marginTop: 20 }}
