@@ -3,9 +3,12 @@ const app = express();
 
 const mysql = require('mysql2');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 app.get("/welcome", function (req, res) {
   res.send("Welcome");
@@ -49,16 +52,30 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.listen(3001, () => {
+app.post("/signout", (req, res) => { 
+    const sql = 'DELETE FROM user WHERE email = "aa"';
+    pool.query(sql, (error, result) => {
+        if (error) throw error;
+    });
+});
+
+app.post("/show", (req, res) => {
+  let sql = 'SELECT * FROM post';
+  let values = [];
+  if (req.body.key && req.body.key !== '') {
+    sql += ' WHERE spot = ?';
+    values.push(req.body.key);
+  }
+  pool.query(sql, values, (error, result) => {
+    if (error) throw error;
+    const updatedResult = result.map(item => {
+      const base64Image = item.image.toString('base64');
+      return { ...item, image: base64Image };
+    });
+    return res.json(updatedResult);
+  });
+});
+
+app.listen(3001, '127.0.0.1', () => {
   console.log(`Listening`);
 });
-/*
-app.get("/get", (req, res) => {
-const sql3 = 'SELECT * from user';
-pool.query(sql3, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-});
-});
-*/
-
