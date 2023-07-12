@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 
 function ReviewPage({ route, navigation }) {
+  const [loading, setLoading] = useState(true);
+
   const { id } = route.params;
   const [favorite, setFavorite] = useState("");
   const [name, setName] = useState("");
@@ -13,6 +22,7 @@ function ReviewPage({ route, navigation }) {
 
   const finding = async () => {
     try {
+      setLoading(true);
       const response = await fetch(
         "https://33dc-192-249-19-234.ngrok-free.app/finding",
         {
@@ -39,13 +49,21 @@ function ReviewPage({ route, navigation }) {
       // />
     } catch (error) {
       console.error("Error occurred during fetch:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   finding();
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#FFF",
+        paddingTop: StatusBar.currentHeight,
+      }}
+    >
       <TouchableOpacity
         style={{ marginTop: 30, marginLeft: 15 }}
         onPress={() => navigation.goBack()}

@@ -19,27 +19,29 @@ function HomePage({ navigation }) {
   const [task, setTask] = useState();
 
   const [taskItems, setTaskItems] = useState({
-    1: { id: "1", text: "7시 기상", completed: false },
-    2: { id: "2", text: "서울역 9시 ktx", completed: false },
-    3: {
-      id: "3",
-      text: "강릉역 → 동해막국수로 이동",
+    1: { id: "1", text: "서울역 9시 ktx", completed: false },
+    2: {
+      id: "2",
+      text: "강릉역 -> 막국수 먹으러가기",
       completed: false,
     },
-    4: { id: "4", text: "안목해변 카페투어!", completed: false },
-    5: { id: "5", text: "중앙시장에서 야식 사오기", completed: false },
+    3: { id: "3", text: "안목해변 카페투어!", completed: false },
+    4: { id: "4", text: "중앙시장에서 야식 사오기", completed: false },
   });
 
   const getTodoList = async () => {
-    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/todo", {
-      method: "POST",
-      body: JSON.stringify({
-        name: "넙죽이"
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://33dc-192-249-19-234.ngrok-free.app/todo",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: "넙죽이",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.ok) {
       const todoList = await response.json();
       setTaskItems(todoList);
@@ -49,17 +51,20 @@ function HomePage({ navigation }) {
   };
 
   const addTodoItem = async () => {
-    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/addtodo", {
-      method: "POST",
-      body: JSON.stringify({
-        text: "테스트",
-        name: "넙죽이"
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  
+    const response = await fetch(
+      "https://33dc-192-249-19-234.ngrok-free.app/addtodo",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          text: "테스트",
+          name: "넙죽이",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     if (response.ok) {
       const todoList = await response.json();
       setTaskItems(todoList);
@@ -101,7 +106,7 @@ function HomePage({ navigation }) {
   };
 
   return (
-    <SafeAreaView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ImageBackground
         source={require("../../assets/images/plane.png")}
         resizeMode="cover"
@@ -150,7 +155,7 @@ function HomePage({ navigation }) {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }
 

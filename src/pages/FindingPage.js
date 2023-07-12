@@ -12,7 +12,7 @@ import {
   View,
   Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Spinner from "../../assets/spinner.gif";
 
@@ -25,7 +25,8 @@ function FindingPage() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getList();}, [isFocused]);
+    getList();
+  }, [isFocused]);
 
   const onChangeKeyword = useCallback((text) => {
     setKeyword(text.trim());
@@ -117,7 +118,7 @@ function FindingPage() {
             style={{
               color: "black",
               fontSize: 20,
-              fontFamily: "NanumSquareRoundR",
+              fontFamily: "NanumSquareRoundB",
               marginLeft: 25,
             }}
           >
@@ -194,9 +195,16 @@ function FindingPage() {
             }}
           />
           <View style={styles.createButton}>
-            {/* <TouchableOpacity style={styles.floatingButton}>
-              <Icon name="plus" size={25} color="#000000" style={styles.icon} />
-            </TouchableOpacity> */}
+            <TouchableOpacity
+              style={styles.floatingButton}
+              onPress={() =>
+                navigation.navigate("WritePage" /* { : item.name }*/)
+              }
+            >
+              <View style={styles.addWrapper}>
+                <Text style={styles.addText}>+</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       )}

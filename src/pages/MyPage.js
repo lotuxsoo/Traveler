@@ -9,7 +9,7 @@ import {
   Alert,
   ImageBackground,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Octicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function MyPage({ navigation }) {
@@ -34,15 +34,18 @@ function MyPage({ navigation }) {
   }, []);
 
   const signout = async () => {
-    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/signout", {
-      method: "POST",
-      body: JSON.stringify({
-        name: name,
-      }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://33dc-192-249-19-234.ngrok-free.app/signout",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
     if (response.ok) {
       Alert.alert("Signed out!");
       navigation.navigate("SplashPage");
@@ -65,13 +68,75 @@ function MyPage({ navigation }) {
         source={require("../../assets/images/logo.png")}
       />
     </View> */}
-      <View style={styles.first}>
-        <Text style={styles.title}>마이페이지</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: 50,
+          marginTop: 20,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {/* <AntDesign
+            name="setting"
+            size={24}
+            color="black"
+            style={{ marginLeft: 20 }}
+          /> */}
+          <Text style={styles.title}>마이페이지</Text>
+        </View>
+        <Octicons
+          name="bell-fill"
+          size={24}
+          color="black"
+          style={{ marginRight: 20 }}
+        />
       </View>
 
-      <View style={styles.profile}>
-        <FontAwesome name="user" size={50} />
-        <Text style={styles.name}>{name} 님</Text>
+      <View
+        style={{
+          borderBottomColor: "#C4C4C4",
+          borderBottomWidth: 1,
+          marginTop: 10,
+          marginBottom: 10,
+        }}
+      />
+      <View
+        style={{
+          flexDirection: "row",
+          alignContent: "center",
+          alignItems: "center",
+          marginLeft: 25,
+          marginVertical: 10,
+        }}
+      >
+        <FontAwesome name="user" size={48} />
+        <Text
+          style={{
+            color: "black",
+            fontSize: 25,
+            marginLeft: 18,
+            fontFamily: "NanumSquareRoundB",
+          }}
+        >
+          {name}
+        </Text>
+        <Text
+          style={{
+            fontFamily: "NanumSquareRoundR",
+            color: "black",
+            fontSize: 20,
+            marginLeft: 5,
+          }}
+        >
+          님, 안녕하세요!
+        </Text>
       </View>
 
       {/* <View style={styles.second}>
@@ -87,14 +152,6 @@ function MyPage({ navigation }) {
         <FontAwesome name="chevron-right" size={23} style={styles.icon} />
       </Pressable>
     </View> */}
-      <View
-        style={{
-          borderBottomColor: "#C4C4C4",
-          borderBottomWidth: 1,
-          marginTop: 10,
-          marginBottom: 10,
-        }}
-      />
 
       <View style={styles.second}>
         <Text style={{ fontSize: 20, fontFamily: "NanumSquareRoundR" }}>
@@ -132,8 +189,8 @@ const styles = StyleSheet.create({
   title: {
     color: "black",
     fontSize: 20,
-    fontFamily: "NanumSquareRoundR",
-    marginLeft: 25,
+    fontFamily: "NanumSquareRoundB",
+    marginLeft: 20,
   },
   profile: {
     flexDirection: "row",
@@ -152,7 +209,7 @@ const styles = StyleSheet.create({
   },
   first: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     alignItems: "center",
     height: 50,
     marginTop: 20,
