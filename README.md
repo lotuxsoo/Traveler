@@ -21,8 +21,8 @@
 
 # 캡쳐 화면
 
-![image](https://github.com/lotuxsoo/Traveler/assets/86272865/0210094e-3022-4154-9480-9e7cd304ffc2)
+![image](https://github.com/lotuxsoo/Traveler/assets/86272865/7e36c9e4-ac35-47d2-8e16-7d6bd96a9e02)
 
 ![image](https://github.com/lotuxsoo/Traveler/assets/86272865/da84c19a-cf1d-4227-9b22-c2398ea023a6)
 
-![image](https://github.com/lotuxsoo/Traveler/assets/86272865/5889ba59-363c-4f2c-a1b6-508767e531cd)
+![image](https://github.com/lotuxsoo/Traveler/assets/86272865/882ffffa-5905-40e2-b88a-df0c1c39c71e)
