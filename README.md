@@ -1,4 +1,4 @@
-![image](https://github.com/lotuxsoo/Traveler/assets/86272865/23088173-532f-47df-b0dd-dc874118af51)# 프로젝트명 
+# 프로젝트명 
 ```
   Traveler: 우리의 여행 일기장
 ```
