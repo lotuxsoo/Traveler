@@ -4,6 +4,7 @@ import FindingPage from "./FindingPage";
 import MyPage from "./MyPage";
 import HomePage from "./HomePage";
 import MapPage from "./MapPage";
+import WritePage from "./WritePage";
 import ReviewPage from "./ReviewPage";
 import { Feather } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,6 +15,7 @@ const FindingStackNav = () => {
     <FindingStack.Navigator screenOptions={{ headerShown: false }}>
       <FindingStack.Screen name="FindingPage" component={FindingPage} />
       <FindingStack.Screen name="ReviewPage" component={ReviewPage} />
+      <FindingStack.Screen name="WritePage" component={WritePage} />
     </FindingStack.Navigator>
   );
 };
