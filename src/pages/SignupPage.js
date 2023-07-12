@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 
 function SignupPage({ navigation }) {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
@@ -32,7 +32,7 @@ function SignupPage({ navigation }) {
   //   };
 
   const signUp = async () => {
-    if (!username) {
+    if (!name) {
       Alert.alert("이름을 입력하세요.");
       return;
     }
@@ -45,38 +45,42 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://10.0.2.2:3001/signup", {
-      method: "POST",
-      body: JSON.stringify({
-        username: username,
-        email: email,
-        password: password,
-      }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://33dc-192-249-19-234.ngrok-free.app/signup",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
 
     if (response.ok) {
-      setIsRegisterSuccess(true);
+      //setIsRegisterSuccess(true);
       alert("Register Success!");
-    }
-
-    if (isRegisterSuccess) {
       navigation.navigate("MainTab", { screen: "HomePage" });
     }
+
+    // if (isRegisterSuccess) {
+    //   navigation.navigate("MainTab", { screen: "HomePage" });
+    // }
   };
 
   return (
-    <LinearGradient style={{ flex: 1 }} colors={["#3F51B5", "#E8EAF6"]}>
+    <LinearGradient style={{ flex: 1 }} colors={["#2196F3", "#BBDEFB"]}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text
             style={{
               color: "#FAFAFA",
               fontSize: 35,
-              fontWeight: "800",
               marginBottom: 10,
+              fontFamily: "NanumSquareRoundB",
             }}
           >
             Traveler
@@ -86,15 +90,15 @@ function SignupPage({ navigation }) {
             style={{
               color: "#FAFAFA",
               fontSize: 20,
-              fontWeight: "800",
               marginBottom: 10,
+              fontFamily: "NanumSquareRoundR",
             }}
           >
             Create an account
           </Text>
           <TextInput
-            value={username}
-            onChangeText={setUsername}
+            value={name}
+            onChangeText={(name) => setName(name)}
             placeholder="Full name"
             style={styles.input}
             ref={nameRef}
@@ -102,7 +106,7 @@ function SignupPage({ navigation }) {
           />
           <TextInput
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(email) => setEmail(email)}
             placeholder="Email"
             style={styles.input}
             ref={emailRef}
@@ -113,7 +117,7 @@ function SignupPage({ navigation }) {
           />
           <TextInput
             value={password}
-            onChangeText={setPassword}
+            onChangeText={(password) => setPassword(password)}
             placeholder="Password"
             style={styles.input}
             ref={passwordRef}
@@ -124,7 +128,7 @@ function SignupPage({ navigation }) {
           />
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#0251ce" }]}
+            style={[styles.button, { backgroundColor: "#1976D2" }]}
             onPress={signUp}
             // onPress={() =>
             //   navigation.navigate("MainTab", { screen: "HomePage" })
@@ -188,6 +192,7 @@ const styles = StyleSheet.create({
     color: "white",
     alignSelf: "center",
     marginVertical: 10,
+    fontFamily: "NanumSquareRoundR",
   },
   loginContainer: {
     flexDirection: "row",

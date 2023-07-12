@@ -28,7 +28,7 @@ function SplashPage({ navigation }) {
             style={{
               color: "#FAFAFA",
               fontSize: 40,
-              fontWeight: "800",
+              fontFamily: "NanumSquareRoundB",
             }}
           >
             Let's travel!
@@ -36,8 +36,8 @@ function SplashPage({ navigation }) {
 
           <TouchableOpacity
             style={[styles.submitcontainer, { backgroundColor: "#FAFAFA" }]}
-            onPress={() =>
-              //navigation.navigate("MainTab", { screen: "HomePage" })
+            onPress={
+              //() => navigation.navigate("MainTab", { screen: "HomePage" })
               navigation.navigate("SignupPage")
             }
           >
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
   },
   submitText: {
     fontSize: 20,
-    fontWeight: "bold",
     color: "black",
     alignSelf: "center",
     marginVertical: 10,
+    fontFamily: "NanumSquareRoundB",
   },
 });
 

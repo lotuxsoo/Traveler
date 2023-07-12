@@ -3,18 +3,18 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 const Task1 = ({ item, deleteTask, toggleTask, mapTask }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  //const [isEditing, setIsEditing] = useState(false);
   const _handleUpdateButtonPress = () => {
     setIsEditing(true);
   };
 
-  const _onSubmitEditing = () => {
-    if (isEditing) {
-      const editedTask = Object.assign({}, item, { text });
-      setIsEditing(false);
-      updateTask(editedTask);
-    }
-  };
+  // const _onSubmitEditing = () => {
+  //   if (isEditing) {
+  //     const editedTask = Object.assign({}, item, { text });
+  //     setIsEditing(false);
+  //     updateTask(editedTask);
+  //   }
+  // };
 
   return (
     <View style={styles.item}>
@@ -36,17 +36,19 @@ const Task1 = ({ item, deleteTask, toggleTask, mapTask }) => {
             <Feather name="circle" size={25} color="black"></Feather>
           </TouchableOpacity>
         )}
-        <Text style={{ fontSize: 15 }}>{item.text}</Text>
+        <Text style={{ fontSize: 15, fontFamily: "NanumSquareRoundR" }}>
+          {item.text}
+        </Text>
       </View>
       <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ marginLeft: 10 }}>
+        {/* <TouchableOpacity style={{ marginLeft: 10 }}>
           <Feather
             name="edit"
             size={23}
             color="black"
             onPress={_handleUpdateButtonPress}
           ></Feather>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={{ marginLeft: 10 }}>
           <Feather
             name="minus-circle"

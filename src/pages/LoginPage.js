@@ -13,14 +13,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 
 function LoginPage({ navigation }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const passwordInputRef = createRef();
 
   const login = async () => {
-    if (!email) {
-      Alert.alert("이메일을 입력하세요.");
+    if (!name) {
+      Alert.alert("이름을 입력하세요.");
       return;
     }
     if (!password) {
@@ -28,24 +29,29 @@ function LoginPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://10.0.2.2:3001/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log("response.ok", response.ok);
+    const response = await fetch(
+      "https://33dc-192-249-19-234.ngrok-free.app/login",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          password: password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     const responseData = await response.json();
-    console.log("responseData", responseData);
+
     if (responseData.Login == true) {
-      console.log(response.headers);
       AsyncStorage.setItem(
         "@userData",
-        JSON.stringify(response.headers),
+        JSON.stringify({
+          name: name,
+          password: password,
+        }),
         (err) => {
           if (err) {
             console.log("an error");
@@ -60,34 +66,36 @@ function LoginPage({ navigation }) {
       if (response.ok) {
         Alert.alert("Login Success!");
         navigation.navigate("MainTab", { screen: "HomePage" });
+      } else {
+        Alert.alert("Login Failed!");
       }
     }
   };
 
-  useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const token = await AsyncStorage.getItem("@token");
-        if (token) {
-          navigation.navigate("MainTab", { screen: "HomePage" });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    checkToken();
-  }, []);
+  // useEffect(() => {
+  //   const checkToken = async () => {
+  //     try {
+  //       const token = await AsyncStorage.getItem("@token");
+  //       if (token) {
+  //         navigation.navigate("MainTab", { screen: "HomePage" });
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   checkToken();
+  // }, []);
 
   return (
-    <LinearGradient style={{ flex: 1 }} colors={["#3F51B5", "#E8EAF6"]}>
+    <LinearGradient style={{ flex: 1 }} colors={["#2196F3", "#BBDEFB"]}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text
             style={{
               color: "#FAFAFA",
               fontSize: 35,
-              fontWeight: "800",
               marginBottom: 10,
+              fontFamily: "NanumSquareRoundB",
             }}
           >
             Welcome
@@ -96,16 +104,16 @@ function LoginPage({ navigation }) {
             style={{
               color: "#FAFAFA",
               fontSize: 20,
-              fontWeight: "800",
               marginBottom: 10,
+              fontFamily: "NanumSquareRoundR",
             }}
           >
             Log in to your exist account
           </Text>
           <TextInput
-            value={email}
-            onChangeText={(email) => setEmail(email)}
-            placeholder="Email"
+            value={name}
+            onChangeText={(name) => setName(name)}
+            placeholder="Full name"
             style={{
               fontSize: 15,
               borderRadius: 15,
@@ -120,7 +128,7 @@ function LoginPage({ navigation }) {
               passwordInputRef.current && passwordInputRef.current.focus()
             }
             blurOnSubmit={false}
-            keyboardType="email-address"
+            // keyboardType="email-address"
             returnKeyType="next"
           />
 
@@ -144,7 +152,7 @@ function LoginPage({ navigation }) {
           />
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#0148a4" }]}
+            style={[styles.button, { backgroundColor: "#1976D2" }]}
             onPress={login}
           >
             <Text style={styles.buttonText}>Log In</Text>

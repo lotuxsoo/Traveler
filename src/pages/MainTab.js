@@ -24,7 +24,14 @@ function MainTab() {
   return (
     <Tab.Navigator
       initialRouteName="HomePage"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          height: 60,
+          // backgroundColor: "#BBDEFB",
+        },
+        keyboardHidesTabBar: true,
+      }}
     >
       <Tab.Screen
         name="HomePage"

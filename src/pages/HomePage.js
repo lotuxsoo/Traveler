@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -13,16 +13,21 @@ import {
 } from "react-native";
 import Task1 from "./../components/Task1";
 import { Feather, Fontisto } from "@expo/vector-icons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 function HomePage({ navigation }) {
   const [task, setTask] = useState();
 
   const [taskItems, setTaskItems] = useState({
-    1: { id: "1", text: "todo list 1", completed: false },
-    2: { id: "2", text: "todo list 2", completed: false },
-    3: { id: "3", text: "todo list 3", completed: false },
-    4: { id: "4", text: "todo list 4", completed: false },
-    5: { id: "5", text: "todo list 5", completed: false },
+    1: { id: "1", text: "7시 기상", completed: false },
+    2: { id: "2", text: "서울역 9시 ktx", completed: false },
+    3: {
+      id: "3",
+      text: "강릉역 → 동해막국수로 이동",
+      completed: false,
+    },
+    4: { id: "4", text: "안목해변 카페투어!", completed: false },
+    5: { id: "5", text: "중앙시장에서 야식 사오기", completed: false },
   });
 
   const addTask = () => {
@@ -37,9 +42,6 @@ function HomePage({ navigation }) {
     const currentTasks = Object.assign({}, taskItems);
     delete currentTasks[id];
     setTaskItems(currentTasks);
-    // let itemsCopy = [...taskItems];
-    // itemsCopy.splice(index, 1);
-    // setTaskItems(itemsCopy);
   };
 
   const toggleTask = (id) => {
@@ -63,11 +65,10 @@ function HomePage({ navigation }) {
   return (
     <SafeAreaView>
       <ImageBackground
-        source={require("../../assets/images/background.png")}
+        source={require("../../assets/images/plane.png")}
         resizeMode="cover"
         style={{ width: "100%", height: "100%" }}
       >
-        {/* Added this scroll view to enable scrolling when list gets longer than the page */}
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontFamily: "NanumSquareRoundB",
   },
   items: {
     marginTop: 30,
@@ -147,6 +148,7 @@ const styles = StyleSheet.create({
     borderColor: "#C0C0C0",
     borderWidth: 1,
     width: 250,
+    fontFamily: "NanumSquareRoundR",
   },
   addWrapper: {
     width: 60,
