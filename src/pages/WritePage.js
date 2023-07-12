@@ -1,159 +1,122 @@
-import React, { useState, useEffect, createRef, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    FlatList,
-    Keyboard,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    Image
-  } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Icon } from '@rneui/themed';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Keyboard
+} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 
-const imagePickerOption = {
-	mediaType: "photo",
-	maxWidth: 500,
-	maxHeight: 500,
-	includeBase64: Platform.OS === "android",
-};
+const WritePage = ({ navigation }) => {
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageName, setImageName] = useState(null);
+  const permisionFunction = async () => {
+    const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (imagePermission.status !== 'granted') {
+      alert('권한이 필요합니다');
+    }
+  };
 
-function WritePage({ route, navigation }) {
-    // const{ name } = route.params;
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
-    const [name, setName] = useState("");
-    const [image, setImage] = useState(null);
-    const [galleryPermission, setGalleryPermission] = useState(null);
-    const [imageName, setImageName] = useState(null);
+  useEffect(() => {
+    permisionFunction();
+  }, []);
 
-    const titleRef = createRef();
-    const textRef = createRef();
-    
-    const permisionFunction = async () => {
-        const imagePermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        setGalleryPermission(imagePermission.status === 'granted');
-        if (imagePermission.status !== 'granted') {
-            alert('권한이 필요합니다');
-        }
-      };
-    
-      useEffect(() => {
-        permisionFunction();
-      }, []);
+  const handleClose = () => {
+    navigation.goBack();
+  };
 
-    const pick = async () => {
-        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert("Permission required!");
-            return;
-        }
-        let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        if (!pickerResult.canceled) {
-            try {
-                const { uri } = pickerResult;
-                setImage(await fetch(uri));
-            } catch (error) {
-              console.log("Error reading image file:", error);
-            }
-          }
-     };
+  const handlePick = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-    const handleClose = () => {
+    if (!result.canceled) {
+    console.log(result.uri);
+      setImage(result.uri);
+      setImageName(result.uri.split('/').pop());
+    }
+  };
+
+  const handleCheck = async () => {
+    if (!title || !text || !image) {
+      Alert.alert("All fields are required.");
+      return;
+    }
+
+    try {
+      let response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/add", {
+        method: "POST",
+        body: JSON.stringify({
+            spot: title,
+            review: text,
+            favorite: 5,
+            name: "",
+            image: image
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+      });
+
+      if (response.ok) {
+        Alert.alert("Success!");
         navigation.goBack();
-    };
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-    const handleCheck = async () => {
-        if (!title) {
-          Alert.alert("제목을 입력하세요.");
-          return;
-        }
-        if (!text) {
-          Alert.alert("내용을 입력하세요.");
-          return;
-        }
-        
-        if (!image) {
-          Alert.alert("사진을 추가하세요.");
-          return;
-        }
-        
-        const randomFavorite = Math.floor(Math.random() * 100) + 1;
-        
-        const formData = new FormData();
-        formData.append("spot", title);
-        formData.append("review", text);
-        formData.append("favorite", randomFavorite);
-        formData.append("name", name);
-        formData.append("image", image);
-      
-        try {
-            const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/add", {
-              method: "POST",
-              body: JSON.stringify(formData),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          
-            if (response.ok) {
-              alert("Success!");
-              navigation.navigate("FindingPage");
-            }
-          } catch (error) {
-            console.log("Error:", error);
-          }
-      };
-    
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={handleClose} style={styles.closebutton}>
-                        <Icon name ="close"/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleCheck} style={styles.checkbutton}>
-                        <Icon name ="check"/>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <TextInput
-                value={title}
-                onChangeText={setTitle}
-                placeholder="제목을 입력하세요"
-                style={[styles.title, styles.centerTextInput]}
-                ref={titleRef}
-                onSubmitEditing={() => textRef.current.focus()}
-            />
-            <TextInput
-                value={text}
-                onChangeText={setText}
-                placeholder="내용을 입력하세요"
-                style={styles.textinput}
-                ref={textRef}
-                onSubmitEditing={() => Keyboard.dismiss()}
-            />
-            <TouchableOpacity onPress={pick} style={styles.button}>
-                    <Text style={styles.buttonText}>Choose Image</Text>
-            </TouchableOpacity>
-            <View style={styles.imageContainer}>
-                {imageName && (
-                    <View>
-                        <Text style={styles.imageName}>{imageName}</Text>
-                    </View>
-                )}
-            </View>
-      </SafeAreaView>
-    );
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={handleClose} style={styles.closebutton}>
+            <Text style={styles.buttonText}>Close</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleCheck} style={styles.checkbutton}>
+            <Text style={styles.buttonText}>Check</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <TextInput
+        value={title}
+        onChangeText={setTitle}
+        placeholder="제목을 입력하세요"
+        style={[styles.title, styles.centerTextInput]}
+        onSubmitEditing={Keyboard.dismiss}
+      />
+      <TextInput
+        value={text}
+        onChangeText={setText}
+        placeholder="내용을 입력하세요"
+        style={styles.textinput}
+        onSubmitEditing={Keyboard.dismiss}
+      />
+      <TouchableOpacity onPress={handlePick} style={styles.button}>
+        <Text style={styles.buttonText}>Choose Image</Text>
+      </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        {imageName && (
+          <View>
+            <Text style={styles.imageName}>{imageName}</Text>
+          </View>
+        )}
+      </View>
+    </SafeAreaView>
+  );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -161,7 +124,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     header: {
         backgroundColor: "#D3D3D3",
         width: "100%",
@@ -171,7 +133,6 @@ const styles = StyleSheet.create({
         position: "sticky",
         top: 0,
       },
-
       buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -179,28 +140,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 10
       },
-    
       button: {
         backgroundColor: "#D3D3D3",
         borderRadius: 30,
         paddingVertical: 10,
         paddingHorizontal: 20,
         marginVertical: 5,
-        alignSelf: "center", 
+        alignSelf: "center",
       },
-
     closebutton: {
         backgroundColor: '#D3D3D3',
         padding: 10,
         borderRadius: 5,
     },
-
     checkbutton: {
         backgroundColor: '#D3D3D3',
         padding: 10,
         borderRadius: 5,
     },
-
     text: {
         fontSize: 30,
         color: "black",
@@ -230,7 +187,6 @@ const styles = StyleSheet.create({
         padding: 15,
         alignSelf: "center"
     },
-
     buttonText: {
         fontSize: 20,
         paddingHorizontal: 10,
@@ -240,18 +196,14 @@ const styles = StyleSheet.create({
     centerTextInput: {
         textAlignVertical: 'center',
       },
-
     imageContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     },
-
     image: {
         width: 300,
         height: 250,
     },
-
 });
-
 export default WritePage;
