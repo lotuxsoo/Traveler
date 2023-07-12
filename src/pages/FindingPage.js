@@ -12,15 +12,18 @@ import {
   View,
   Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import Icon from 'react-native-vector-icons/Ionicons';
-
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 function FindingPage() {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [keyword, setKeyword] = useState("");
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getList();}, [isFocused]);
 
   const onChangeKeyword = useCallback((text) => {
     setKeyword(text.trim());
@@ -29,7 +32,7 @@ function FindingPage() {
   const getList = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://10.0.2.2:3001/show", {
+      const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/show", {
         method: "POST",
         body: JSON.stringify({
           key: keyword,
@@ -145,8 +148,11 @@ function FindingPage() {
           }}
         />
         <View style={styles.createButton}>
-          <TouchableOpacity style={styles.floatingButton}>
-              <Icon name="plus" size={25} color="#000000" style={styles.icon} />
+          <TouchableOpacity style={styles.floatingButton} 
+              onPress={() => navigation.navigate('WritePage',/* { : item.name }*/)}>
+              <View style={styles.addWrapper}>
+                <Text style={styles.addText}>+</Text>
+              </View>
           </TouchableOpacity>
         </View>
         </View>

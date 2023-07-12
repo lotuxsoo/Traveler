@@ -13,13 +13,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 
 function LoginPage({ navigation }) {
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const passwordInputRef = createRef();
 
   const login = async () => {
-    if (!email) {
+    if (!name) {
       Alert.alert("이메일을 입력하세요.");
       return;
     }
@@ -28,10 +28,10 @@ function LoginPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://10.0.2.2:3001/login", {
+    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/login", {
       method: "POST",
       body: JSON.stringify({
-        email: email,
+        name: name,
         password: password,
       }),
       headers: {
@@ -64,19 +64,6 @@ function LoginPage({ navigation }) {
     }
   };
 
-  useEffect(() => {
-    const checkToken = async () => {
-      try {
-        const token = await AsyncStorage.getItem("@token");
-        if (token) {
-          navigation.navigate("MainTab", { screen: "HomePage" });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    checkToken();
-  }, []);
 
   return (
     <LinearGradient style={{ flex: 1 }} colors={["#007260", "#B2DFDB"]}>
@@ -101,9 +88,9 @@ function LoginPage({ navigation }) {
             Log in to your exist account
           </Text>
           <TextInput
-            value={email}
-            onChangeText={(email) => setEmail(email)}
-            placeholder="Email"
+            value={name}
+            onChangeText={(name) => setName(name)}
+            placeholder="Name"
             style={{
               fontSize: 15,
               borderRadius: 15,
@@ -118,7 +105,6 @@ function LoginPage({ navigation }) {
               passwordInputRef.current && passwordInputRef.current.focus()
             }
             blurOnSubmit={false}
-            keyboardType="email-address"
             returnKeyType="next"
           />
 

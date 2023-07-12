@@ -23,6 +23,44 @@ function HomePage({ navigation }) {
     5: { id: "5", text: "todo list 5", completed: false },
   });
 
+  const getTodoList = async () => {
+    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/todo", {
+      method: "POST",
+      body: JSON.stringify({
+        name: "넙죽이"
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const todoList = await response.json();
+      setTaskItems(todoList);
+    } else {
+      throw new Error("Network error!");
+    }
+  };
+
+  const addTodoItem = async () => {
+    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/addtodo", {
+      method: "POST",
+      body: JSON.stringify({
+        text: "테스트",
+        name: "넙죽이"
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  
+    if (response.ok) {
+      const todoList = await response.json();
+      setTaskItems(todoList);
+    } else {
+      throw new Error("Network error!");
+    }
+  };
+
   const addTask = () => {
     Keyboard.dismiss();
     const ID = Date.now().toString();

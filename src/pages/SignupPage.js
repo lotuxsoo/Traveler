@@ -45,7 +45,7 @@ function SignupPage({ navigation }) {
       return;
     }
 
-    const response = await fetch("http://10.0.2.2:3001/signup", {
+    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/signup", {
       method: "POST",
       body: JSON.stringify({
         username: username,

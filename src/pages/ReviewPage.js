@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
-function ReviewPage({ route, navigation }) {
+function ReviewPage({ route }) {
     const{ id } = route.params;
     const finding = async () => {
         try {
