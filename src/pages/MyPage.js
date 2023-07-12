@@ -34,7 +34,7 @@ function MyPage({ navigation }) {
   }, []);
 
   const signout = async () => {
-    const response = await fetch("http://localhost:3001/signout", {
+    const response = await fetch("https://33dc-192-249-19-234.ngrok-free.app/signout", {
       method: "POST",
       body: JSON.stringify({
         name: name,

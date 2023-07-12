@@ -21,6 +21,11 @@ function FindingPage() {
   const [list, setList] = useState([]);
   const [keyword, setKeyword] = useState("");
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getList();}, [isFocused]);
 
   const onChangeKeyword = useCallback((text) => {
     setKeyword(text.trim());

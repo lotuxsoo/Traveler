@@ -14,7 +14,6 @@ import { LinearGradient } from "expo-linear-gradient";
 
 function LoginPage({ navigation }) {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const passwordInputRef = createRef();
@@ -128,7 +127,6 @@ function LoginPage({ navigation }) {
               passwordInputRef.current && passwordInputRef.current.focus()
             }
             blurOnSubmit={false}
-            // keyboardType="email-address"
             returnKeyType="next"
           />
 
