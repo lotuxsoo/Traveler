@@ -1,4 +1,4 @@
-# 프로젝트명 
+![image](https://github.com/lotuxsoo/Traveler/assets/86272865/23088173-532f-47df-b0dd-dc874118af51)# 프로젝트명 
 ```
   Traveler: 우리의 여행 일기장
 ```
@@ -22,3 +22,7 @@
 # 캡쳐 화면
 
 ![image](https://github.com/lotuxsoo/Traveler/assets/86272865/0210094e-3022-4154-9480-9e7cd304ffc2)
+
+![image](https://github.com/lotuxsoo/Traveler/assets/86272865/da84c19a-cf1d-4227-9b22-c2398ea023a6)
+
+![image](https://github.com/lotuxsoo/Traveler/assets/86272865/5889ba59-363c-4f2c-a1b6-508767e531cd)
