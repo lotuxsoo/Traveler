@@ -11,7 +11,8 @@
 
 ## 개발 환경
 - Language: React Native, Node.js
-- IDE: VS code
+- DataBase: MySQL
+- IDE: VSCode
 
 ## 화면 소개
 
